@@ -1,0 +1,74 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2509
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Sub alphabetical_testing()\
+\
+'loop through each sheet\
+ For Each ws In Worksheets\
+\
+Dim ticker As String\
+Dim yearly_change As Long\
+Dim percentage_change As Long\
+Dim total_stock_volume As Long\
+Dim SummaryTableRow As Long\
+Dim beggining_price As Double\
+Dim year_close  As Long\
+Dim year_open As Long\
+\
+\
+SummaryTableRow = 2\
+\
+'assign headers\
+ws.Cells(1, 9).Value = "Ticker"\
+ws.Cells(1, 10).Value = "Yearly Change"\
+ws.Cells(1, 11).Value = "Percent Change"\
+ws.Cells(1, 12).Value = "Total Stock Volume"\
+\
+'Determine last colum + row\
+LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row\
+\
+'loop\
+For i = 2 To LastRow\
+\
+\
+\
+'condition for ticker\
+beggining_price = Cells(2, 3).Value\
+If ws.Cells(i, 1).Value <> ws.Cells(i + 1, 7).Value Then\
+ticker = ws.Cells(i, 1).Value\
+yearly_change = ws.Cells(i, 7).Value\
+\
+year_open = ws.Cells(i, 3).Value\
+year_close = ws.Cells(i, 6).Value\
+End If\
+\
+\
+'Formula\
+yearly_change = year_close - beggining_price\
+total_stock_volume = ws.Cells(i, 1).Value + ws.Cells(i, 7).Value\
+percentage_change = (yearly_change / beggining_price) * 100\
+ws.Range("I" & SummaryTableRow).Value = ticker\
+ws.Range("J" & SummaryTableRow).Value = yearly_change\
+ws.Range("L" & SummaryTableRow).Value = total_stock_volume\
+\
+'color changes\
+If ws.Cells(i, 11) <= 0 Then\
+ws.Cells(i, 11).Interior.ColorIndex = 3\
+\
+ElseIf ws.Cells(i, 11) > 0 Then\
+ ws.Cells(i, 11).Interior.ColorIndex = 4\
+ End If\
+ \
+\
+\
+Next i\
+Next ws\
+\
+\
+End Sub\
+\
+}
